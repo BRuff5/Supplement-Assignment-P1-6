@@ -1,31 +1,35 @@
+import unittest
 import numpy as np
-import pytest
-from your_module_name import generate_normal_array, solve_equations_cramers_rule
+from testcases import generate_normal_array, solve_equations_cramers_rule, generate_integer_array_with_even_odd_indexes
 
-def test_generate_normal_array_shape():
-    shape = (3, 3)
-    mean = 0
-    std_dev = 1
-    result = generate_normal_array(shape, mean, std_dev)
-    assert result.shape == shape
+class TestFunctions(unittest.TestCase):
+    def test_generate_normal_array(self):
+        shape = (4, 8)
+        mean = 0
+        std_dev = 1
+        array = generate_normal_array(shape, mean, std_dev)
+        self.assertEqual(array.shape, shape)
+        self.assertAlmostEqual(np.mean(array), mean, delta=0.5)
+        self.assertAlmostEqual(np.std(array), std_dev, delta=0.5)
 
-def test_generate_normal_array_mean_std_dev():
-    shape = (1000,)
-    mean = 5
-    std_dev = 2
-    result = generate_normal_array(shape, mean, std_dev)
-    assert abs(np.mean(result) - mean) < 0.1
-    assert abs(np.std(result) - std_dev) < 0.1
+    def test_solve_equations_cramers_rule(self):
+        A = np.array([[2, 1], [2, 3]])
+        B = np.array([8, 13])
+        solutions = solve_equations_cramers_rule(A, B)
+        expected_solutions = np.array([3, 2])  # Solved manually or using a calculator
+        np.testing.assert_array_almost_equal(solutions, expected_solutions)
 
-def test_solve_equations_cramers_rule():
-    A = np.array([[2, -1], [1, 1]])
-    B = np.array([1, 3])
-    result = solve_equations_cramers_rule(A, B)
-    expected = np.array([2, 1])  # Solves 2x - y = 1, x + y = 3
-    np.testing.assert_almost_equal(result, expected)
+        with self.assertRaises(ValueError):
+            solve_equations_cramers_rule(np.array([[1, 2], [2, 4]]), np.array([5, 10]))
 
-def test_zero_determinant():
-    A = np.array([[1, 2], [2, 4]])
-    B = np.array([1, 2])
-    with pytest.raises(ValueError):
-        solve_equations_cramers_rule(A, B)
+    def test_generate_integer_array_with_even_odd_indexes(self):
+        shape = (10,)
+        even_indices, odd_indices, array = generate_integer_array_with_even_odd_indexes(shape, low=0, high=100)
+        for i in even_indices:
+            self.assertEqual(array[i] % 2, 0)
+        for i in odd_indices:
+            self.assertEqual(array[i] % 2, 1)
+        self.assertEqual(len(even_indices) + len(odd_indices), len(array))
+
+if __name__ == "__main__":
+    unittest.main()

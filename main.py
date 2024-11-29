@@ -1,5 +1,4 @@
-import sys
-import numpy as np 
+import numpy as np
 
 
 def generate_normal_array(shape, mean, std_dev):
@@ -54,3 +53,25 @@ def generate_integer_array_with_even_odd_indexes(shape, low=0, high=100):
     Returns: 
         Tuple of indices of even numbers, indices of odd numbers, and the generated array
 """
+
+if __name__ == "__main__":
+    mean = 0
+    std_dev = 1
+    shape = (4, 8)  
+    normal_array = generate_normal_array(shape, mean, std_dev)
+    print("Normally distributed array:\n", normal_array)
+    
+    # Solve equation
+    A = np.array([[2, 1], [2, 3]])
+    B = np.array([8, 13])
+    solutions = solve_equations_cramers_rule(A, B)
+    print("Solutions to the equations:", solutions)
+    
+    # Generate array
+    shape_integers = (3,) 
+    even_indices, odd_indices, integer_array = generate_integer_array_with_even_odd_indexes(shape_integers)
+    print("Integer array:", integer_array)
+    print("Even indices:", even_indices)
+    print("Odd indices:", odd_indices)
+    
+    
