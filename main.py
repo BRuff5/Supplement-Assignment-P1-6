@@ -39,3 +39,18 @@ def solve_equations_cramers_rule(A, B):
         Values of the variables as a numpy array
 """
 
+def generate_integer_array_with_even_odd_indexes(shape, low=0, high=100):
+    array = np.random.randint(low, high, size=shape)
+    even_indices = np.where(array % 2 == 0)[0].tolist()
+    odd_indices = np.where(array % 2 != 0)[0].tolist()
+    
+    return even_indices, odd_indices, array
+
+"""Generate an array of integers and returns even and odd numbers.
+    Args:
+        shape: Shape of the array to be generated
+        low: Minimum integer value
+        high: Maximum integer value
+    Returns: 
+        Tuple of indices of even numbers, indices of odd numbers, and the generated array
+"""
